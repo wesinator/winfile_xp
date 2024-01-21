@@ -15,8 +15,11 @@
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
+[Dd]ebugStatic/
 [Rr]elease/
+[Rr]eleaseStatic/
 [Rr]eleases/
+[Ww]in32/
 x64/
 x86/
 bld/
@@ -290,3 +293,4 @@ __pycache__/
 Makefile.depends
 *.exe
 tags
+update_ms_mnaster.bat
