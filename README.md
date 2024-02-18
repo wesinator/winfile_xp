@@ -10,7 +10,7 @@ I will consider bugs fixes and suggestions for minor changes to the master branc
 ## Download The App
 If you just want to download the WinFile application without worrying about compiling from the source code, go for the pre-compiled version available.
 
-- [Latest Release on Github (v10.2.1.0)](https://github.com/schinagl/winfile/releases/tag/v10.2.1.0)
+- [Latest Release on Github (v10.2.1.2)](https://github.com/schinagl/winfile/releases/tag/v10.2.1.2)
 
 To see older versions, [see the releases page](https://github.com/Microsoft/winfile/releases).
 
@@ -53,6 +53,8 @@ selecting one changes to that directory.  Default = c:\\. Configure via Winfile.
 22. Japanese localisation with full-width katakanas
 23. Create files with suffix '- Copy', when copying with (`ctrl+C`) -> (`ctrl+V`) in the same dir, or drag-copy with mouse onto empty space in same dir.
 24. UNC Path support via CTRL-G. Shows up as 'digit drive' 0: - 9:. Select it either via CTRL-0 ... CTRL-9 or from drive drop-down. Remove UNC digit drive with CTRL-W
+25. Current username is shown in caption.
+26. Contains statically linked versions to be used for WinPE
 
 ## Contributing
 
