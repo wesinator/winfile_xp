@@ -891,6 +891,6 @@ BEGIN
     CONTROL         "TO BE SET", IDD_VERTEXT, "static", SS_LEFTNOWORDWRAP | WS_CHILD, 36, 18, 200, 8
     LTEXT           "זכויות יוצרים (c) Microsoft Corporation. כל הזכויות שמורות.", -1, 36, 30, 200, 8
     LTEXT           "מורשה תחת רשיון MIT.", -1, 36, 42, 200, 8
-    LTEXT           "https://github.com/Microsoft/winfile", -1, 36, 54, 200, 8
+    LTEXT           "https://github.com/schinagl/winfile", -1, 36, 54, 200, 8
     DEFPUSHBUTTON   "אישור", IDOK, 200, 50, 40, 14
 END
