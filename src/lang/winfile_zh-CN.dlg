@@ -855,6 +855,6 @@ BEGIN
     CONTROL         "TO BE SET", IDD_VERTEXT, "static", SS_LEFTNOWORDWRAP | WS_CHILD, 36, 18, 200, 8
     LTEXT           "(c) Microsoft Corporation。保留所有权利。", -1, 36, 30, 200, 8
     LTEXT           "使用 MIT License 发行。", -1, 36, 42, 200, 8
-    LTEXT           "https://github.com/schinagl/winfile", -1, 36, 54, 200, 8
+    LTEXT           "https://github.com/wesinator/winfile_xp", -1, 36, 54, 200, 8
     DEFPUSHBUTTON   "确定", IDOK, 200, 50, 40, 14
 END
