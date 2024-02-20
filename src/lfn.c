@@ -519,9 +519,10 @@ WFCopyIfSymlink(LPTSTR pszFrom, LPTSTR pszTo, DWORD dwFlags, DWORD dwNotificatio
    DWORD dwReparseTag = DecodeReparsePoint(pszFrom, szReparseDest, 2 * MAXPATHLEN);
    if (IO_REPARSE_TAG_SYMLINK == dwReparseTag) {
       // NT 6.0+ only API; using address lookup call
+      // GetProcAddress should call `CreateSymbolicLinkW`
       HINSTANCE hDll = GetModuleHandleA("kernel32.dll");
       CreateSymbolicLink_ crsymlnk;
-      crsymlnk = (CreateSymbolicLink_)GetProcAddress(hDll, "CreateSymbolicLink");
+      crsymlnk = (CreateSymbolicLink_)GetProcAddress(hDll, "CreateSymbolicLinkW");
       if (crsymlnk != NULL) {
           crsymlnk(pszTo, szReparseDest, dwFlags | (bDeveloperModeAvailable ? SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE : 0));
       }

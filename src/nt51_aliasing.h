@@ -53,6 +53,7 @@ typedef LCID(__stdcall* LocaleNameToLCID_)(LPCWSTR lpName, DWORD dwFlags);
 typedef BOOL(__stdcall* Wow64DisableWow64FsRedirection_)(PVOID* OldValue);
 typedef BOOL(__stdcall* Wow64RevertWow64FsRedirection_)(PVOID OldValue);
 
+// GetProcAddress should call `CreateSymbolicLinkW`
 typedef BOOL(__stdcall* CreateSymbolicLink_)(LPCWSTR lpSymlinkFileName, LPCWSTR lpTargetFileName, DWORD dwFlags);
 
 // hardcoding SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE to avoid compile errors for win7/xp target build
