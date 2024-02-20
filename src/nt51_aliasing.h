@@ -62,3 +62,7 @@ typedef BOOL(__stdcall* CreateSymbolicLink_)(LPCWSTR lpSymlinkFileName, LPCWSTR 
 
 // used in tbar.c
 typedef HRESULT(__stdcall* SetWindowTheme_)(HWND hwnd, LPCWSTR pszSubAppName, LPCWSTR pszSubIdList);
+
+// used in wfcomman.c
+// GetProcAddress has to call the `RegGetValueW` function to work correctly 
+typedef LSTATUS(__stdcall* RegGetValue_)(HKEY hkey, LPCWSTR lpSubKey, LPCWSTR lpValue, DWORD dwFlags, LPDWORD pdwType, PVOID pvData, LPDWORD pcbData);
