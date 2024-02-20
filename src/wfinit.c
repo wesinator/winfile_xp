@@ -25,6 +25,8 @@
 #include "security.h"
 #include "secext.h"
 
+#include "nt51_aliasing.h"
+
 TCHAR szNTlanman[] = TEXT("ntlanman.dll");
 TCHAR szHelv[] = TEXT("MS Shell Dlg");
 /*
@@ -1071,7 +1073,14 @@ InitFileManager(
    GetPrivateProfileString(szSettings, szUILanguage, szNULL, szTemp, COUNTOF(szTemp), szTheINIFile);
    if (szTemp[0])
    {
-       LCID lcidUI = LocaleNameToLCID(szTemp, 0);
+       // NT 6.0+ only API; using address lookup call
+       HINSTANCE hDll = GetModuleHandleA("kernel32.dll");
+       LocaleNameToLCID_ lnlc;
+       LCID lcidUI = LOCALE_USER_DEFAULT; //LocaleNameToLCID_(szTemp, 0);
+       lnlc = (LocaleNameToLCID_)GetProcAddress(hDll, "LocaleNameToLCID");
+       if (lnlc != NULL) {
+           lcidUI = lnlc(szTemp, 0);
+       }
        if (lcidUI != 0)
        {
            SetThreadUILanguage((LANGID)lcidUI);

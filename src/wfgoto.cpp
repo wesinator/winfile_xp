@@ -20,6 +20,8 @@ extern "C"
 #include "resize.h"
 }
 
+#include "nt51_aliasing.h"
+
 void BuildDirectoryBagOValues(BagOValues<PDNODE> *pbov, LPTSTR szRoot, PDNODE pNode, DWORD scanEpoc, LPTSTR szCachedRootLower);
 void FreeDirectoryBagOValues(BagOValues<PDNODE> *pbov);
 

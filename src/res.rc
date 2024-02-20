@@ -88,29 +88,29 @@ BEGIN
 END
 
 // Define version information
-#define VER_FILEDESCRIPTION_STR     "File Manager"
-#define VER_INTERNALNAME_STR        "fileman\0"
+#define VER_FILEDESCRIPTION_STR     "File Manager (XP-Windows 10 compatible)"
+//#define VER_INTERNALNAME_STR        "winfile\0"
 #define VER_ORIGINALFILENAME_STR    "WINFILE.EXE"
-#define VER_COMPANYNAME_STR         "Microsoft Corporation"
-#define VER_PRODUCTNAME_STR         "File Manager"
+#define VER_COMPANYNAME_STR         "Microsoft Corporation - modified by schinagl, wesinator"
+#define VER_PRODUCTNAME_STR         "File Manager (XP compatible)"
 #define VER_LEGALCOPYRIGHT_STR      "Copyright (c) Microsoft Corporation. All rights reserved."
 
-#define VER_FILEVERSION             10,2,1,2
-#define VER_FILEVERSION_STR         "10.2.1.2\0"
-#define VER_PRODUCTVERSION          10,2,1,2
-#define VER_PRODUCTVERSION_STR      "10.2.1.2\0"
+#define VER_FILEVERSION             10,2,5,1
+#define VER_FILEVERSION_STR         "10.2.5.1\0"
+#define VER_PRODUCTVERSION          10,2,5,1
+#define VER_PRODUCTVERSION_STR      "10.2.5.1\0"
 
-#ifndef DEBUG
+/*#ifndef DEBUG
 #define VER_DEBUG                   0
 #else
 #define VER_DEBUG                   VS_FF_DEBUG
-#endif
+#endif*/
 
 VS_VERSION_INFO VERSIONINFO
     FILEVERSION     VER_FILEVERSION
     PRODUCTVERSION  VER_PRODUCTVERSION
     FILEFLAGSMASK   VS_FFI_FILEFLAGSMASK
-    FILEFLAGS       VER_DEBUG
+    //FILEFLAGS       VER_DEBUG
     FILEOS          VOS__WINDOWS32
     FILETYPE        VFT_APP
     FILESUBTYPE     VFT2_UNKNOWN
@@ -122,7 +122,7 @@ BEGIN
             VALUE "CompanyName", VER_COMPANYNAME_STR
             VALUE "FileDescription", VER_FILEDESCRIPTION_STR
             VALUE "FileVersion", VER_FILEVERSION_STR
-            VALUE "InternalName", VER_INTERNALNAME_STR
+            //VALUE "InternalName", VER_INTERNALNAME_STR
             VALUE "OriginalFilename", VER_ORIGINALFILENAME_STR
             VALUE "ProductName", VER_PRODUCTNAME_STR
             VALUE "ProductVersion", VER_PRODUCTVERSION_STR
@@ -140,7 +140,7 @@ END
 #endif
 
 #ifndef CREATEPROCESS_MANIFEST_RESOURCE_ID
-#define CREATEPROCESS_MANIFEST_RESOURCE_ID 1
+#define CREATEPROCESS_MANIFEST_RESOURCE_ID 0
 #endif
 
 #ifdef __MINGW32__

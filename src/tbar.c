@@ -11,6 +11,8 @@
 
 #include "winfile.h"
 
+#include "nt51_aliasing.h"
+
 #define DRIVELIST_BORDER        3
 #define MINIDRIVE_MARGIN        4
 
@@ -1232,8 +1234,17 @@ CreateFMToolbar(void)
    if (!hwndToolbar)
       return;
 
-   if (bDisableVisualStyles)
-     SetWindowTheme(hwndToolbar, pwszInvalidTheme, pwszInvalidTheme);
+   if (bDisableVisualStyles) {
+       // NT 6.0+ only API; using address lookup call
+       // uxtheme.dll may not even be present on XP
+       HINSTANCE hDll = GetModuleHandleA("uxtheme.dll");
+       if (hDll != NULL) {
+           SetWindowTheme_ swt;
+           swt = (SetWindowTheme_)GetProcAddress(hDll, "SetWindowTheme");
+           if (swt != NULL)
+               swt(hwndToolbar, pwszInvalidTheme, pwszInvalidTheme);
+       }
+   }
 
    SendMessage (hwndToolbar, TB_SETINDENT, 8, 0);
 
@@ -1257,8 +1268,17 @@ CreateFMToolbar(void)
       return;
    }
 
-   if (bDisableVisualStyles)
-     SetWindowTheme(hwndDriveList, pwszInvalidTheme, pwszInvalidTheme);
+   if (bDisableVisualStyles) {
+       // NT 6.0+ only API; using address lookup call
+       // uxtheme.dll may not even be present on XP
+       HINSTANCE hDll = GetModuleHandleA("uxtheme.dll");
+       if (hDll != NULL) {
+           SetWindowTheme_ swt;
+           swt = (SetWindowTheme_)GetProcAddress(hDll, "SetWindowTheme");
+           if (swt != NULL)
+               swt(hwndDriveList, pwszInvalidTheme, pwszInvalidTheme);
+       }
+   }
 
    SendMessage(hwndDriveList, CB_SETEXTENDEDUI, 0, 0L);
    SendMessage(hwndDriveList, WM_SETFONT, (WPARAM)hfontDriveList, MAKELPARAM(TRUE, 0));

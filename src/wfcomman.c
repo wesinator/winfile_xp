@@ -807,7 +807,7 @@ GetPowershellExePath(LPTSTR szPSPath)
             DWORD dwInstall;
             DWORD dwType;
             DWORD cbValue = sizeof(dwInstall);
-            dwError = RegGetValue(hkey, szSub, TEXT("Install"), RRF_RT_DWORD, &dwType, (PVOID)&dwInstall, &cbValue);
+            dwError = RegQueryValue(hkey, szSub, TEXT("Install"), RRF_RT_DWORD, &dwType, (PVOID)&dwInstall, &cbValue);
 
             if (dwError == ERROR_SUCCESS && dwInstall == 1)
             {
@@ -821,7 +821,7 @@ GetPowershellExePath(LPTSTR szPSPath)
                     LPTSTR szPSExe = TEXT("\\Powershell.exe");
 
                     cbValue = (MAXPATHLEN - lstrlen(szPSExe)) * sizeof(TCHAR);
-                    dwError = RegGetValue(hkeySub, TEXT("PowerShellEngine"), TEXT("ApplicationBase"), RRF_RT_REG_SZ | RRF_RT_REG_EXPAND_SZ, &dwType, (PVOID)szPSPath, &cbValue);
+                    dwError = RegQueryValue(hkeySub, TEXT("PowerShellEngine"), TEXT("ApplicationBase"), RRF_RT_REG_SZ | RRF_RT_REG_EXPAND_SZ, &dwType, (PVOID)szPSPath, &cbValue);
 
                     if (dwError == ERROR_SUCCESS)
                     {

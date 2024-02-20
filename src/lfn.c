@@ -16,6 +16,8 @@
 #include "lfn.h"                            // lfn includes
 #include "wfcopy.h"
 
+#include "nt51_aliasing.h"
+
 BOOL IsFATName(LPTSTR pName);
 
 /* WFFindFirst -
@@ -43,7 +45,13 @@ WFFindFirst(
    //
 
    PVOID oldValue;
-   Wow64DisableWow64FsRedirection(&oldValue);
+   // NT 6.0+ only API; using address lookup call
+   HINSTANCE hDll = GetModuleHandleA("kernel32.dll");
+   Wow64DisableWow64FsRedirection_ wow64dwow64fsredir;
+   wow64dwow64fsredir = (Wow64DisableWow64FsRedirection_)GetProcAddress(hDll, "Wow64DisableWow64FsRedirection");
+   if (wow64dwow64fsredir != NULL) {
+       wow64dwow64fsredir(&oldValue);
+   }
 
    if ((dwAttrFilter & ~(ATTR_DIR | ATTR_HS)) == 0)
    {
@@ -68,7 +76,11 @@ WFFindFirst(
 
    lpFind->fd.dwFileAttributes &= ATTR_USED;
 
-   Wow64RevertWow64FsRedirection(oldValue);
+   Wow64RevertWow64FsRedirection_ wow64revertwow64fsredir;
+   wow64revertwow64fsredir = (Wow64RevertWow64FsRedirection_)GetProcAddress(hDll, "Wow64RevertWow64FsRedirection");
+   if (wow64revertwow64fsredir != NULL) {
+       wow64revertwow64fsredir(&oldValue);
+   }
 
    //
    // Keep track of length
@@ -116,8 +128,18 @@ WFFindFirst(
 BOOL
 WFFindNext(LPLFNDTA lpFind)
 {
-   PVOID oldValue;
-   Wow64DisableWow64FsRedirection(&oldValue);
+    PVOID oldValue;
+    // NT 6.0+ only API; using address lookup call
+    HINSTANCE hDll = GetModuleHandleA("kernel32.dll");
+    Wow64DisableWow64FsRedirection_ wow64dwow64fsredir;
+    wow64dwow64fsredir = (Wow64DisableWow64FsRedirection_)GetProcAddress(hDll, "Wow64DisableWow64FsRedirection");
+    if (wow64dwow64fsredir != NULL) {
+        wow64dwow64fsredir(&oldValue);
+    }
+
+    // for next call
+    Wow64RevertWow64FsRedirection_ wow64revertwow64fsredir;
+    wow64revertwow64fsredir = (Wow64RevertWow64FsRedirection_)GetProcAddress(hDll, "Wow64RevertWow64FsRedirection");
 
    while (FindNextFile(lpFind->hFindFile, &lpFind->fd)) {
 
@@ -154,7 +176,9 @@ WFFindNext(LPLFNDTA lpFind)
           }
       }
 
-      Wow64RevertWow64FsRedirection(oldValue);
+      if (wow64revertwow64fsredir != NULL) {
+          wow64revertwow64fsredir(&oldValue);
+      }
 
       lpFind->err = 0;
       return TRUE;
@@ -162,10 +186,11 @@ WFFindNext(LPLFNDTA lpFind)
 
    lpFind->err = GetLastError();
 
-   Wow64RevertWow64FsRedirection(oldValue);
+   if (wow64revertwow64fsredir != NULL) {
+       wow64revertwow64fsredir(&oldValue);
+   }
    return(FALSE);
 }
-
 
 /* WFFindClose -
  *
@@ -493,7 +518,13 @@ WFCopyIfSymlink(LPTSTR pszFrom, LPTSTR pszTo, DWORD dwFlags, DWORD dwNotificatio
    WCHAR szReparseDest[2 * MAXPATHLEN];
    DWORD dwReparseTag = DecodeReparsePoint(pszFrom, szReparseDest, 2 * MAXPATHLEN);
    if (IO_REPARSE_TAG_SYMLINK == dwReparseTag) {
-      CreateSymbolicLink(pszTo, szReparseDest, dwFlags | (bDeveloperModeAvailable ? SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE : 0));
+      // NT 6.0+ only API; using address lookup call
+      HINSTANCE hDll = GetModuleHandleA("kernel32.dll");
+      CreateSymbolicLink_ crsymlnk;
+      crsymlnk = (CreateSymbolicLink_)GetProcAddress(hDll, "CreateSymbolicLink");
+      if (crsymlnk != NULL) {
+          crsymlnk(pszTo, szReparseDest, dwFlags | (bDeveloperModeAvailable ? SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE : 0));
+      }
       dwRet = GetLastError();
       if (ERROR_SUCCESS == dwRet)
          ChangeFileSystem(dwNotification, pszTo, NULL);
@@ -583,12 +614,18 @@ WFSymbolicLink(LPTSTR pszFrom, LPTSTR pszTo, DWORD dwFlags)
    DWORD dwRet;
 
    Notify(hdlgProgress, IDS_COPYINGMSG, pszFrom, pszTo);
-
-   if (CreateSymbolicLink(pszTo, pszFrom, dwFlags | (bDeveloperModeAvailable ? SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE : 0))) {
-      ChangeFileSystem(dwFlags == SYMBOLIC_LINK_FLAG_DIRECTORY ? FSC_MKDIR : FSC_CREATE, pszTo, NULL);
-      dwRet = ERROR_SUCCESS;
-   } else {
-      dwRet = GetLastError();
+   // NT 6.0+ only API; using address lookup call
+   HINSTANCE hDll = GetModuleHandleA("kernel32.dll");
+   CreateSymbolicLink_ crsymlnk;
+   crsymlnk = (CreateSymbolicLink_)GetProcAddress(hDll, "CreateSymbolicLink");
+   if (crsymlnk != NULL) {
+       if (crsymlnk(pszTo, pszFrom, dwFlags | (bDeveloperModeAvailable ? SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE : 0))) {
+           ChangeFileSystem(dwFlags == SYMBOLIC_LINK_FLAG_DIRECTORY ? FSC_MKDIR : FSC_CREATE, pszTo, NULL);
+           dwRet = ERROR_SUCCESS;
+       }
+       else {
+           dwRet = GetLastError();
+       }
    }
 
    return dwRet;

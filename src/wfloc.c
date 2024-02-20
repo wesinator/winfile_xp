@@ -9,6 +9,7 @@ Licensed under the MIT License.
 
 ********************************************************************/
 #include "winfile.h"
+#include "nt51_aliasing.h"
 
 /*
 The Language names are sorted like this because CBS_SORT Flag for comboboxes causes bugs.
@@ -31,11 +32,29 @@ VOID InitLangList(HWND hCBox)
     for (UINT i = 0; i <= (COUNTOF(szLCIDs) - 1); i++)
     {
         TCHAR szLangName[MAXPATHLEN] = { 0 };
-        LCID lcidTemp = LocaleNameToLCID(szLCIDs[i], 0);
+        LCID lcidTemp = LOCALE_USER_DEFAULT;// LocaleNameToLCID_(szLCIDs[i], 0);
 
-        // TODO: need to test this on pre-Vista and on/after Win XP 64
-        if (GetLocaleInfoEx(szLCIDs[i], LOCALE_SLOCALIZEDDISPLAYNAME, szLangName, COUNTOF(szLangName)) == 0)
-            lstrcpy(szLangName, TEXT("BUGBUG"));
+        // NT 6.0+ only API; using address lookup call
+        HINSTANCE hDll = GetModuleHandleA("kernel32.dll");
+        LocaleNameToLCID_ lnlc;
+        LCID lcidUI = LOCALE_USER_DEFAULT; //LocaleNameToLCID_(szTemp, 0);
+        lnlc = (LocaleNameToLCID_)GetProcAddress(hDll, "LocaleNameToLCID");
+        if (lnlc != NULL) {
+            lcidUI = lnlc(szLCIDs[i], 0);
+        }
+
+
+        GetLocaleInfoEx_ glie;
+        glie = (GetLocaleInfoEx_)GetProcAddress(hDll, "GetLocaleInfoEx");
+        if (glie != NULL) {
+            // TODO: need to test this on pre-Vista and on/after Win XP 64
+            if (glie(szLCIDs[i], LOCALE_SLOCALIZEDDISPLAYNAME, szLangName, COUNTOF(szLangName)) == 0)
+                lstrcpy(szLangName, TEXT("BUGBUG"));
+        }
+        else {
+            if (GetLocaleInfo(lcidUI, LOCALE_SLOCALIZEDDISPLAYNAME, szLangName, COUNTOF(szLangName)) == 0)
+                lstrcpy(szLangName, TEXT("BUGBUG"));
+        }
 
         // every entry in the array above needs to be addd to the list box;
         // SaveLang() below depends on each index in the listbox being valid.
