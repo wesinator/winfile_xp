@@ -10,6 +10,8 @@ I will consider bugs fixes and suggestions for minor changes to the master branc
 
 **NOTE**: support for versions of Windows older than XP / NT 5.1 is not the goal of this project, nor do I plan to test this on such systems. The binary may work on Win2k but will likely have more bugs.
 
+![Winfile running in XP Professional SP3 32-bit](winfile_xpsp3_running.png)
+
 ## Download The App
 See the [releases](https://github.com/wesinator/winfile_xp/releases)!
 
