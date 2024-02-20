@@ -1,26 +1,40 @@
-# ![icon](winfile.png) Windows File Manager (WinFile)
+# ![icon](winfile.png) Windows File Manager (WinFile) for Windows XP (32-bit NT 5.1) thru Windows 10
 
-The Windows File Manager lives again and runs as a native x86 and x64 desktop app
-on all currently supported version of Windows, including Windows 10 & 11. I welcome your thoughts, comments and suggestions.
+The Windows File Manager lives again and runs as a native x86, now supporting Windows XP.
+The goal of this project was to build a version of WinFile that would run fairly reliably on all versions of Windows from Windows XP SP3 (NT 5.1 32-bit) to Windows 10/11.
+While there have been some forks that aimed to work on Server 2003/XP Professional x64 edition (NT 5.2), there was not a version that worked for Windows XP 32-bit based on NT 5.1
 
-This current master was forked off from [microsoft/winfile](https://github.com/microsoft/winfile) and contains changes/additions to WinFile over the years by many contributors. Furthermore it contains additions which I think are usefull or bug fixes.
+This current master was forked off from [maintainer Hermann Schinagl's excellent fork of the Microsoft trunk](https://github.com/schinagl/winfile) and contains changes/additions to WinFile over the years by many contributors.
 
 I will consider bugs fixes and suggestions for minor changes to the master branch. Feel free to create a pull request or post issues as you see fit.
 
+**NOTE**: support for versions of Windows older than XP / NT 5.1 is not the goal of this project, nor do I plan to test this on such systems. The binary may work on Win2k but will likely have more bugs.
+
 ## Download The App
-If you just want to download the WinFile application without worrying about compiling from the source code, go for the pre-compiled version available.
+See the [releases](https://github.com/wesinator/winfile_xp/releases)!
 
-- [Latest Release on Github (v10.2.1.2)](https://github.com/schinagl/winfile/releases/tag/v10.2.1.2)
+## Design changes and notes
 
-To see older versions, [see the releases page](https://github.com/Microsoft/winfile/releases).
+To get this working for Windows XP, the main challenge was identifying APIs that were unsupported, and switching them out to dynamic loading of the addresses using `GetModuleHandleA`.
+Fortunately, another (incomplete) fork started this work - https://github.com/blackwingcat/winfile_nt5/commit/e55dd95ea869383ad52c2bcbd58bf4f0ee0681d2
 
+For this project, I created a separate header file `nt51_aliasing.h`, to make it easy to add necessary changes, and so that it is easier to track what changes were needed.
+
+The following APIs were the main changes:
+ - `GetLocaleInfoEx` and `LocaleNametoLCID` were changed to conditional dynamic loading.
+ - `IO_REPARSE_TAG` definitions which are apparently used by tools such as OneDrive were hardcoded.
+ - The Wow64Redirection APIs needed to be changed to dynamic loading, since 32-bit XP lacks these.
+ - Symbolic linking that was introduced in NT6.0/Vista and [added to in Windows 10](https://blogs.windows.com/windowsdeveloper/2016/12/02/symlinks-windows-10/) needed to be defined.
+ - `SetWindowTheme` which handles the window panes with the NT6+ theme was set to conditional dynamic loading, conditional on the presence of `uxtheme.dll` AND the GetModuleHandle call.
+
+------
+# Winfile Info from Microsoft
 
 ## History
 The Windows File manager was originally released with Windows 3.0 in the early 1990s.  You
 can read more about the history at https://en.wikipedia.org/wiki/File_Manager_(Windows).
 
 ## What it looks like
-# ![Winfile](winfilescreenshot.png)
 
 ## Changes in master v10.2.1.0
 In summary, v10.2.1.0 has the following changes/new features:
@@ -75,3 +89,5 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 Copyright (c) Microsoft Corporation. All rights reserved.
 
 Licensed under the [MIT](LICENSE) License.
+
+[NO_TRAIN]::
