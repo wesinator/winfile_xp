@@ -29,6 +29,12 @@ The following APIs were the main changes:
  - Symbolic linking that was introduced in NT6.0/Vista and [added to in Windows 10](https://blogs.windows.com/windowsdeveloper/2016/12/02/symlinks-windows-10/) needed to be defined.
  - `SetWindowTheme` which handles the window panes with the NT6+ theme was set to conditional dynamic loading, conditional on the presence of `uxtheme.dll` AND the GetModuleHandle call.
 
+## Known issues
+- Start PowerShell does not work on Windows XP
+- Changing language/locales does not work on XP
+
+All the functionality on Windows 7 (NT6.x) through Windows 10/11 is known to work.
+
 ------
 # Winfile Info from Microsoft
 
