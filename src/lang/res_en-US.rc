@@ -26,8 +26,8 @@ BEGIN
     MENUITEM    "Re&name...\tF2",   IDM_RENAME
     MENUITEM    "Proper&ties...\tAlt+Enter",IDM_ATTRIBS
     MENUITEM    SEPARATOR
-    MENUITEM    "Compre&ss...",     IDM_COMPRESS
-    MENUITEM    "&Uncompress...",   IDM_UNCOMPRESS
+    MENUITEM    "Set NTFS Compress Flag...",     IDM_COMPRESS
+    MENUITEM    "Unset NTFS Compress Flag...",   IDM_UNCOMPRESS
     MENUITEM    SEPARATOR
     MENUITEM    "&Run...",          IDM_RUN
     MENUITEM    "Pr&int...",        IDM_PRINT
