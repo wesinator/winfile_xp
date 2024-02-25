@@ -67,7 +67,7 @@ typedef BOOL(__stdcall* CreateSymbolicLink_)(LPCWSTR lpSymlinkFileName, LPCWSTR 
 // // https://blogs.windows.com/windowsdeveloper/2016/12/02/symlinks-windows-10/
 #ifndef SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE
 #define SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE 0x2
-
+#endif
 
 // used in tbar.c
 typedef HRESULT(__stdcall* SetWindowTheme_)(HWND hwnd, LPCWSTR pszSubAppName, LPCWSTR pszSubIdList);
