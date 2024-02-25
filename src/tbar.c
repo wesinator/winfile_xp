@@ -1234,10 +1234,9 @@ CreateFMToolbar(void)
    if (!hwndToolbar)
       return;
 
+   // NT 6.0+ only API; using address lookup call
+   HINSTANCE hDll = GetModuleHandleA("uxtheme.dll");
    if (bDisableVisualStyles) {
-       // NT 6.0+ only API; using address lookup call
-       // uxtheme.dll may not even be present on XP
-       HINSTANCE hDll = GetModuleHandleA("uxtheme.dll");
        if (hDll != NULL) {
            SetWindowTheme_ swt;
            swt = (SetWindowTheme_)GetProcAddress(hDll, "SetWindowTheme");
@@ -1270,8 +1269,6 @@ CreateFMToolbar(void)
 
    if (bDisableVisualStyles) {
        // NT 6.0+ only API; using address lookup call
-       // uxtheme.dll may not even be present on XP
-       HINSTANCE hDll = GetModuleHandleA("uxtheme.dll");
        if (hDll != NULL) {
            SetWindowTheme_ swt;
            swt = (SetWindowTheme_)GetProcAddress(hDll, "SetWindowTheme");
