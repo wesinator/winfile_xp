@@ -1236,10 +1236,11 @@ CreateFMToolbar(void)
 
    // NT 6.0+ only API; using address lookup call
    HINSTANCE hDll = GetModuleHandleA("uxtheme.dll");
+   SetWindowTheme_ swt;
+   swt = (SetWindowTheme_)GetProcAddress(hDll, "SetWindowTheme");
+
    if (bDisableVisualStyles) {
        if (hDll != NULL) {
-           SetWindowTheme_ swt;
-           swt = (SetWindowTheme_)GetProcAddress(hDll, "SetWindowTheme");
            if (swt != NULL)
                swt(hwndToolbar, pwszInvalidTheme, pwszInvalidTheme);
        }
@@ -1268,10 +1269,8 @@ CreateFMToolbar(void)
    }
 
    if (bDisableVisualStyles) {
-       // NT 6.0+ only API; using address lookup call
+       // NT 6.0+ only API; using address lookup call from earlier
        if (hDll != NULL) {
-           SetWindowTheme_ swt;
-           swt = (SetWindowTheme_)GetProcAddress(hDll, "SetWindowTheme");
            if (swt != NULL)
                swt(hwndDriveList, pwszInvalidTheme, pwszInvalidTheme);
        }
