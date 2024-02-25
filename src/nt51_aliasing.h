@@ -1,4 +1,11 @@
+/*
+contains defns for all the changes required for Winfile to run on Windows XP.
+credit to https://github.com/blackwingcat/winfile_nt5/commit/e55dd95ea869383ad52c2bcbd58bf4f0ee0681d2 for starting this effort.
+
+Copyright (c) 2024 wesinator
+*/
 #pragma once
+
 // used in wfloc.c, wfinit.c
 typedef int(__stdcall* GetLocaleInfoEx_)(LPCWSTR lpLocaleName, LCTYPE LCType, LPWSTR lpLCData, int cchData);
 typedef LCID(__stdcall* LocaleNameToLCID_)(LPCWSTR lpName, DWORD dwFlags);
@@ -58,6 +65,7 @@ typedef BOOL(__stdcall* CreateSymbolicLink_)(LPCWSTR lpSymlinkFileName, LPCWSTR 
 
 // hardcoding SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE to avoid compile errors for win7/xp target build
 // // https://blogs.windows.com/windowsdeveloper/2016/12/02/symlinks-windows-10/
+#ifndef SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE
 #define SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE 0x2
 
 
