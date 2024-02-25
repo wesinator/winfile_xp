@@ -26,26 +26,27 @@ LPCTSTR szLCIDs[] = {
     TEXT("pt-PT"),    // Portuguese, Portugal
 };
 
+// This function is currently broken in NT5.x
 VOID InitLangList(HWND hCBox)
 {
+    // NT 6.0+ only APIs; using address lookup call
+    HINSTANCE hDll = GetModuleHandleA("kernel32.dll");
+
+    LocaleNameToLCID_ lnlc;
+    lnlc = (LocaleNameToLCID_)GetProcAddress(hDll, "LocaleNameToLCID");
+    GetLocaleInfoEx_ glie;
+    glie = (GetLocaleInfoEx_)GetProcAddress(hDll, "GetLocaleInfoEx");
+
     // Propogate the list
     for (UINT i = 0; i <= (COUNTOF(szLCIDs) - 1); i++)
     {
         TCHAR szLangName[MAXPATHLEN] = { 0 };
         LCID lcidTemp = LOCALE_USER_DEFAULT;// LocaleNameToLCID_(szLCIDs[i], 0);
-
-        // NT 6.0+ only API; using address lookup call
-        HINSTANCE hDll = GetModuleHandleA("kernel32.dll");
-        LocaleNameToLCID_ lnlc;
         LCID lcidUI = LOCALE_USER_DEFAULT; //LocaleNameToLCID_(szTemp, 0);
-        lnlc = (LocaleNameToLCID_)GetProcAddress(hDll, "LocaleNameToLCID");
         if (lnlc != NULL) {
             lcidUI = lnlc(szLCIDs[i], 0);
         }
 
-
-        GetLocaleInfoEx_ glie;
-        glie = (GetLocaleInfoEx_)GetProcAddress(hDll, "GetLocaleInfoEx");
         if (glie != NULL) {
             // TODO: need to test this on pre-Vista and on/after Win XP 64
             if (glie(szLCIDs[i], LOCALE_SLOCALIZEDDISPLAYNAME, szLangName, COUNTOF(szLangName)) == 0)
