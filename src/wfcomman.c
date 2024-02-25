@@ -797,6 +797,12 @@ GetPowershellExePath(LPTSTR szPSPath)
 
     szPSPath[0] = TEXT('\0');
 
+    // NT 6.0+ only API RegGetValue; using address lookup call
+    // GetProcAddress should call `RegGetValueW`
+    HINSTANCE hDll = GetModuleHandleA("advapi32.dll");
+    RegGetValue_ rgv;
+    rgv = (RegGetValue_)GetProcAddress(hDll, "RegGetValueW");
+
     for (int ikey = 0; ikey < 5; ikey++)
     {
         TCHAR         szSub[10];    // just the "1" or "3"
@@ -810,11 +816,6 @@ GetPowershellExePath(LPTSTR szPSPath)
             DWORD dwType;
             DWORD cbValue = sizeof(dwInstall);
 
-            // NT 6.0+ only API RegGetValue; using address lookup call
-            // GetProcAddress should call `RegGetValueW`
-            HINSTANCE hDll = GetModuleHandleA("advapi32.dll");
-            RegGetValue_ rgv;
-            rgv = (RegGetValue_)GetProcAddress(hDll, "RegGetValueW");
             if (rgv != NULL) {
                 dwError = rgv(hkey, szSub, TEXT("Install"), RRF_RT_DWORD, &dwType, (PVOID)&dwInstall, &cbValue);
             }
