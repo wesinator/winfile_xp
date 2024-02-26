@@ -7,6 +7,7 @@ Copyright (c) 2024 wesinator
 #pragma once
 
 // used in wfloc.c, wfinit.c
+// NOTE: the locale setting won't load properly in Win10 if manifest is disabled.
 typedef int(__stdcall* GetLocaleInfoEx_)(LPCWSTR lpLocaleName, LCTYPE LCType, LPWSTR lpLCData, int cchData);
 typedef LCID(__stdcall* LocaleNameToLCID_)(LPCWSTR lpName, DWORD dwFlags);
 
