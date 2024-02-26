@@ -79,7 +79,7 @@ WFFindFirst(
    Wow64RevertWow64FsRedirection_ wow64revertwow64fsredir;
    wow64revertwow64fsredir = (Wow64RevertWow64FsRedirection_)GetProcAddress(hDll, "Wow64RevertWow64FsRedirection");
    if (wow64revertwow64fsredir != NULL) {
-       wow64revertwow64fsredir(&oldValue);
+       wow64revertwow64fsredir(oldValue);
    }
 
    //
@@ -177,7 +177,7 @@ WFFindNext(LPLFNDTA lpFind)
       }
 
       if (wow64revertwow64fsredir != NULL) {
-          wow64revertwow64fsredir(&oldValue);
+          wow64revertwow64fsredir(oldValue);
       }
 
       lpFind->err = 0;
@@ -187,7 +187,7 @@ WFFindNext(LPLFNDTA lpFind)
    lpFind->err = GetLastError();
 
    if (wow64revertwow64fsredir != NULL) {
-       wow64revertwow64fsredir(&oldValue);
+       wow64revertwow64fsredir(oldValue);
    }
    return(FALSE);
 }
