@@ -1236,15 +1236,13 @@ CreateFMToolbar(void)
 
    // NT 6.0+ only API; using address lookup call
    HINSTANCE hDll = GetModuleHandleA("uxtheme.dll");
-   SetWindowTheme_ swt;
-   swt = (SetWindowTheme_)GetProcAddress(hDll, "SetWindowTheme");
+   SetWindowTheme_ swt = NULL;
+   if (hDll != NULL)
+      swt = (SetWindowTheme_)GetProcAddress(hDll, "SetWindowTheme");
 
-   if (bDisableVisualStyles) {
-       if (hDll != NULL) {
-           if (swt != NULL)
-               swt(hwndToolbar, pwszInvalidTheme, pwszInvalidTheme);
-       }
-   }
+   if (bDisableVisualStyles)
+      if (swt != NULL)
+         swt(hwndToolbar, pwszInvalidTheme, pwszInvalidTheme);
 
    SendMessage (hwndToolbar, TB_SETINDENT, 8, 0);
 
@@ -1268,13 +1266,10 @@ CreateFMToolbar(void)
       return;
    }
 
-   if (bDisableVisualStyles) {
-       // NT 6.0+ only API; using address lookup call from earlier
-       if (hDll != NULL) {
-           if (swt != NULL)
-               swt(hwndDriveList, pwszInvalidTheme, pwszInvalidTheme);
-       }
-   }
+   // NT 6.0+ only API; using address lookup call from earlier
+   if (bDisableVisualStyles)
+      if (swt != NULL)
+         swt(hwndToolbar, pwszInvalidTheme, pwszInvalidTheme);
 
    SendMessage(hwndDriveList, CB_SETEXTENDEDUI, 0, 0L);
    SendMessage(hwndDriveList, WM_SETFONT, (WPARAM)hfontDriveList, MAKELPARAM(TRUE, 0));
