@@ -1,5 +1,7 @@
 # ![icon](winfile.png) Windows File Manager (WinFile) for Windows XP (32-bit NT 5.1) thru Windows 10
 
+## NOTICE: this project is no longer maintained, since Microsoft added an XP target to the official build. It is recommended to use the `ReleaseXPStatic` build of https://github.com/schinagl/winfile
+
 The Windows File Manager lives again and runs as a native x86, now supporting Windows XP.
 The goal of this project was to build a version of WinFile that would run fairly reliably on all versions of Windows from Windows XP SP3 (NT 5.1 32-bit) to Windows 10/11.
 While there have been some forks that aimed to work on Server 2003/XP Professional x64 edition (NT 5.2), there was not a version that worked for Windows XP 32-bit based on NT 5.1
